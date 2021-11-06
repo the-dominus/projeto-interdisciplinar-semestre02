@@ -1,14 +1,17 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        try {
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
-            boolean isRunning = true;
+        boolean isRunning = true;
 
-            while (isRunning) {
+        while (isRunning) {
+            try {
+
                 clearScreen();
                 initialScreen();
 
@@ -16,7 +19,7 @@ public class App {
 
                 switch (resposta) {
                 case '1':
-                    printClientes(scanner);
+                    printClientes(scanner, clientes);
                     break;
                 case '2':
                     printVeiculos(scanner);
@@ -33,13 +36,15 @@ public class App {
                 default:
                     break;
                 }
-            }
 
-        } catch (Exception e) {
-            System.out.println("\n\nVocê fez algo de errado!");
-            System.out.println("\nMensagem do erro: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("\n\nVocê fez algo de errado!");
+                System.out.println("\nMensagem do erro: " + e.getMessage());
+            }
         }
+
         scanner.close();
+
     }
 
     public static void clearScreen() {
@@ -93,7 +98,7 @@ public class App {
 
     }
 
-    public static void printClientes(Scanner scanner) {
+    public static void printClientes(Scanner scanner, ArrayList<Cliente> clientes) {
 
         String title = "# Clientes";
         boolean isBack = true;
@@ -108,8 +113,8 @@ public class App {
             switch (resposta) {
             case '1':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Cadastrô", scanner);
+                cadastraCliente(scanner, clientes);
+                printResultados("Cliente cadastrado com sucesso do Rodrigão!", scanner);
                 break;
             case '2':
                 clearScreen();
@@ -118,8 +123,10 @@ public class App {
                 break;
             case '3':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Consultô", scanner);
+
+                consultarClientes(scanner, clientes);
+
+                // printResultados(message, scanner);
                 break;
             case '4':
                 clearScreen();
@@ -135,6 +142,39 @@ public class App {
             }
         }
 
+    }
+
+    public static void cadastraCliente(Scanner scanner, ArrayList<Cliente> clientes) {
+
+        String title = "# Cadastro de cliente";
+        clearScreen();
+        printTitle(title);
+
+        System.out.println("Digite o nome do cliente: ");
+        String nome = scanner.nextLine();
+        System.out.println("Digite seu CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.println("E por fim, seu e-mail: ");
+        String email = scanner.nextLine();
+
+        Usuario cliente = new Cliente(nome, cpf, email);
+
+        clientes.add((Cliente) cliente);
+
+    }
+
+    public static void consultarClientes(Scanner scanner, ArrayList<Cliente> clientes) {
+
+        String title = "# Nossos clientes";
+        clearScreen();
+        printTitle(title);
+
+        String message = "";
+        for (int i = 0; i < clientes.size(); i++) {
+            message += clientes.get(i).getNome() + "\n";
+        }
+
+        printResultados(message, scanner);
     }
 
     public static void printVeiculos(Scanner scanner) {
