@@ -1,9 +1,23 @@
 public class Veiculo {
   private int id, ano;
   private long preco;
-  private String modelo, cor, placa;
+  private String modelo, cor, placa, marca;
 
-  public Veiculo() {
+  public Veiculo(int ano, long preco, String marca, String modelo, String cor, String placa) {
+    this.ano = ano;
+    this.preco = preco;
+    this.marca = marca;
+    this.modelo = modelo;
+    this.cor = cor;
+    this.placa = placa;
+  }
+
+  public Veiculo(int ano, long preco, String marca, String modelo, String cor) {
+    this.ano = ano;
+    this.preco = preco;
+    this.marca = marca;
+    this.modelo = modelo;
+    this.cor = cor;
   }
 
   public int getId() {
@@ -20,6 +34,14 @@ public class Veiculo {
 
   public void setPreco(long preco) {
     this.preco = preco;
+  }
+
+  public String getMarca() {
+    return marca;
+  }
+
+  public void setMarca(String marca) {
+    this.marca = marca;
   }
 
   public String getModelo() {
@@ -54,10 +76,30 @@ public class Veiculo {
     this.placa = placa;
   }
 
+  public void imprimir(){
+    String message = "";
+
+    message += "[" + this.getId() + "] "; 
+    message += "Veículo: " + this.getMarca() + " " + this.getModelo() + " - " + this.getAno() + "\n";
+    message += "Cor: " + this.getCor() + " - Preço: " + this.getPreco() + "\n";
+    message += "Placa: " + this.getPlaca() + "\n";
+
+    System.out.println(message);
+  }
+
   @Override
   public String toString() {
-    return "Veiculo [ano=" + ano + ", cor=" + cor + ", id=" + id + ", modelo=" + modelo + ", placa=" + placa
-        + ", preco=" + preco + "]";
+    String message = "";
+
+    message += "\n[-] ID: " + this.id + "\n";
+    message += "[1] Ano: " + this.ano + "\n";
+    message += "[2] Preço: " + this.preco + "\n";
+    message += "[3] Marca: " + this.marca + "\n";
+    message += "[4] Modelo: " + this.modelo + "\n";
+    message += "[5] Cor: " + this.cor + "\n";
+    message += "[6] Placa: " + this.placa + "\n";
+
+    return message;
   }
 
 }
