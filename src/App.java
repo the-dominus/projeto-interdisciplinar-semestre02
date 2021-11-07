@@ -6,10 +6,25 @@ public class App {
 
     static ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
     static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    static ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
+
+        for (int i = 0; i < 3; i++) {
+            int id = i + 1;
+            Cliente cliente = new Cliente("cliente " + id, "cliente" + id + "@gmail.com", "123456789");
+            cliente.setId(id);
+            clientes.add(cliente);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            int id = i + 1;
+            Veiculo veiculo = new Veiculo(000 + id, (long) 0.0 + id, "Marca" + id, "Modelo" + id, "Cor" + id);
+            veiculo.setId(id);
+            veiculos.add(veiculo);
+        }
 
         boolean isRunning = true;
 
@@ -150,11 +165,10 @@ public class App {
         System.out.println("E por fim, seu e-mail: ");
         String email = scanner.nextLine();
         int id;
-            
-        if(clientes.size() == 0){
+
+        if (clientes.size() == 0) {
             id = 1;
-        }
-        else{
+        } else {
             Cliente ultimoCliente = clientes.get(clientes.size() - 1);
             id = ultimoCliente.getId() + 1;
         }
@@ -332,8 +346,8 @@ public class App {
 
     }
 
-    public static void cadastraVeiculo(Scanner scanner){
-        
+    public static void cadastraVeiculo(Scanner scanner) {
+
         String title = "# Cadastro de veículos";
         clearScreen();
         printTitle(title);
@@ -347,31 +361,29 @@ public class App {
         System.out.println("Digite a cor do veículo: ");
         String cor = scanner.nextLine();
         System.out.println("Digite o ano do veículo: ");
-        int ano = Integer.parseInt(scanner.nextLine()); //conversão 
+        int ano = Integer.parseInt(scanner.nextLine()); // conversão
 
         String placa = "";
 
         System.out.println("O veículo possui placa? (S/N) ");
         char resposta = scanner.nextLine().toUpperCase().charAt(0);
         int id;
-            
-        if(veiculos.size() == 0){
+
+        if (veiculos.size() == 0) {
             id = 1;
-        }
-        else{
+        } else {
             Veiculo ultimoVeiculo = veiculos.get(veiculos.size() - 1);
             id = ultimoVeiculo.getId() + 1;
         }
 
-        if(resposta == 'S'){
+        if (resposta == 'S') {
             System.out.println("Digite o número da placa: ");
             placa = scanner.nextLine();
 
             Veiculo novoVeiculo = new Veiculo(ano, preco, marca, modelo, cor, placa);
             veiculos.add(novoVeiculo);
             novoVeiculo.setId(id);
-        }
-        else{
+        } else {
             Veiculo novoVeiculo = new Veiculo(ano, preco, marca, modelo, cor);
             veiculos.add(novoVeiculo);
             novoVeiculo.setId(id);
@@ -388,7 +400,7 @@ public class App {
         }
     }
 
-    public static void excluiVeiculo(Scanner scanner){
+    public static void excluiVeiculo(Scanner scanner) {
         String title = "# Exclusão de veículo";
 
         boolean foiExcluido = false;
@@ -421,7 +433,7 @@ public class App {
         }
     }
 
-    public static void alteraVeiculo(Scanner scanner){
+    public static void alteraVeiculo(Scanner scanner) {
         String title = "# Alteração de veículos";
 
         boolean foiAlterado = false;
@@ -529,8 +541,7 @@ public class App {
             switch (resposta) {
             case '1':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Cadastrô", scanner);
+                cadastraPedido(scanner);
                 break;
             case '2':
                 clearScreen();
@@ -556,6 +567,80 @@ public class App {
             }
         }
 
+    }
+
+    public static void cadastraPedido(Scanner scanner) {
+        String title = "# Cadastro de pedido";
+        clearScreen();
+        printTitle(title);
+        Cliente clienteSelecionado = null;
+        ArrayList<Veiculo> veiculosSelecionados = new ArrayList<Veiculo>();
+
+        try {
+            while (clienteSelecionado == null) {
+                System.out.println("Digite o ID do cliente: ");
+                int idCliente = Integer.parseInt(scanner.nextLine());
+
+                for (Cliente cliente : clientes) {
+                    if (cliente.getId() == idCliente) {
+                        clienteSelecionado = cliente;
+                        break;
+                    }
+                }
+
+                if (clienteSelecionado == null) {
+                    printResultados("\nCliente selecionado não existe!\n", scanner);
+                    clearScreen();
+                    printTitle(title);
+                }
+            }
+
+            while (true) {
+                Veiculo veiculoSelecionado = null;
+
+                while (veiculoSelecionado == null) {
+                    System.out.println("Insira o ID do veículo: ");
+                    int idVeiculo = Integer.parseInt(scanner.nextLine());
+
+                    for (Veiculo veiculo : veiculos) {
+                        if (veiculo.getId() == idVeiculo) {
+                            veiculoSelecionado = veiculo;
+                            break;
+                        }
+                    }
+                    if (veiculoSelecionado == null) {
+                        printResultados("\nVeículo selecionado não existe!\n", scanner);
+                        clearScreen();
+                        printTitle(title);
+                    }
+                }
+
+                veiculosSelecionados.add(veiculoSelecionado);
+
+                System.out.println("\nDeseja cadastrar mais algum veículo? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+
+            int id;
+
+            if (pedidos.size() == 0) {
+                id = 1;
+            } else {
+                Pedido ultimoPedido = pedidos.get(pedidos.size() - 1);
+                id = ultimoPedido.getId() + 1;
+            }
+
+            Pedido novoPedido = new Pedido(clienteSelecionado, veiculosSelecionados);
+            novoPedido.setId(id);
+            pedidos.add(novoPedido);
+
+            printResultados("\n\nPedido cadastrado com sucesso!", scanner);
+        } catch (Exception e) {
+            printResultados("\nVocê digitou algo de errado!", scanner);
+        }
     }
 
     public static void printSobre(Scanner scanner) {
