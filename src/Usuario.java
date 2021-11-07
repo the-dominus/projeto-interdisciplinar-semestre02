@@ -43,6 +43,13 @@ public abstract class Usuario {
 
   @Override
   public String toString() {
-    return "Usuario [email=" + email + ", id=" + id + ", nome=" + nome + ", senha=" + senha + "]";
+    String message = "";
+
+    message += "\n[-] ID: " + this.id + "\n";
+    message += "[1] Nome: " + this.nome + "\n";
+    message += "[2] Email: " + this.email + "\n";
+    message += "[3] Senha: " + this.senha + "\n";
+
+    return message;
   }
 }

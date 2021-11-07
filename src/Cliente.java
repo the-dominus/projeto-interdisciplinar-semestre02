@@ -35,8 +35,10 @@ public class Cliente extends Usuario {
 
   @Override
   public String toString() {
-    // deixar o toString na foma de listar
-    return super.toString() + "CPF=" + cpf + ", Endereco=" + endereco + "]";
+    String message = super.toString();
+    message += "[4] CPF: " + this.cpf + "\n";
+    message += "[5] Endereço: " + this.endereco + "\n";
+    return message;
   }
 
 }

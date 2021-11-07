@@ -69,6 +69,17 @@ public class App {
         System.out.print("\nDigite a opção desejada: ");
     }
 
+    public static void printResultados(String message, Scanner scanner) {
+        System.out.println(message);
+        System.out.println("\nAperte qualquer tecla para voltar ao menu anterior");
+
+        try {
+            scanner.nextLine();
+
+        } catch (Exception e) {
+        }
+    }
+
     public static void initialScreen() {
         String title = "# Tela inicial";
 
@@ -81,23 +92,6 @@ public class App {
         System.out.println("[5] Sair");
 
         System.out.print("\nDigite a opção desejada: ");
-    }
-
-    public static void printSobre(Scanner scanner) {
-        clearScreen();
-
-        String title = "# Sobre o sistema";
-        printTitle(title);
-        System.out.println("Esses são nossos desenvolvedores: ");
-        System.out.println("Cleyson");
-        System.out.println("Bruno");
-        System.out.println("Lari");
-        System.out.println("Lucas");
-        System.out.println("Luigi");
-        System.out.println("Rodrigo");
-
-        printResultados("", scanner);
-
     }
 
     public static void printClientes(Scanner scanner) {
@@ -120,8 +114,7 @@ public class App {
                 break;
             case '2':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Alterô", scanner);
+                alteraClientes(scanner);
                 break;
             case '3':
                 clearScreen();
@@ -162,6 +155,90 @@ public class App {
         Cliente ultimoCliente = clientes.get(clientes.size() - 1);
 
         novoCliente.setId(ultimoCliente.getId() + 1);
+    }
+
+    public static void alteraClientes(Scanner scanner) {
+        String title = "# Alteração de clientes";
+
+        boolean foiAlterado = false;
+
+        while (!foiAlterado) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do cliente para alterar: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Cliente cliente : clientes) {
+                if (cliente.getId() == id) {
+                    String infoCliente = cliente.toString();
+                    System.out.println(infoCliente);
+
+                    try {
+                        System.out.println("Quais informações você deseja excluir?");
+                        char resposta = scanner.nextLine().charAt(0);
+
+                        switch (resposta) {
+                        case '1':
+                            System.out.print("\nDigite o novo valor: ");
+                            String nome = scanner.nextLine();
+
+                            cliente.setNome(nome);
+                            foiAlterado = true;
+                            printResultados("\n\nCliente alterado com sucesso!", scanner);
+                            break;
+                        case '2':
+                            System.out.print("\nDigite o novo valor: ");
+                            String email = scanner.nextLine();
+
+                            cliente.setEmail(email);
+                            foiAlterado = true;
+                            printResultados("\n\nCliente alterado com sucesso!", scanner);
+                            break;
+                        case '3':
+                            System.out.print("\nDigite o novo valor: ");
+                            String senha = scanner.nextLine();
+
+                            cliente.setSenha(senha);
+                            foiAlterado = true;
+                            printResultados("\n\nCliente alterado com sucesso!", scanner);
+                            break;
+                        case '4':
+                            System.out.print("\nDigite o novo valor: ");
+                            String cpf = scanner.nextLine();
+
+                            cliente.setCpf(cpf);
+                            foiAlterado = true;
+                            printResultados("\n\nCliente alterado com sucesso!", scanner);
+                            break;
+                        case '5':
+                            System.out.print("\nDigite o novo valor: ");
+                            String endereco = scanner.nextLine();
+
+                            cliente.setEndereco(endereco);
+                            foiAlterado = true;
+                            printResultados("\n\nCliente alterado com sucesso!", scanner);
+                            break;
+
+                        default:
+                            break;
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    break;
+                }
+            }
+
+            if (!foiAlterado) {
+                System.out.println("\n\nCliente não encontrado ou existem informações inválidas!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+        }
     }
 
     public static void consultarClientes() {
@@ -294,15 +371,21 @@ public class App {
 
     }
 
-    public static void printResultados(String message, Scanner scanner) {
-        System.out.println(message);
-        System.out.println("\nAperte qualquer tecla para voltar ao menu anterior");
+    public static void printSobre(Scanner scanner) {
+        clearScreen();
 
-        try {
-            scanner.nextLine();
+        String title = "# Sobre o sistema";
+        printTitle(title);
+        System.out.println("Esses são nossos desenvolvedores: ");
+        System.out.println("Cleyson");
+        System.out.println("Bruno");
+        System.out.println("Lari");
+        System.out.println("Lucas");
+        System.out.println("Luigi");
+        System.out.println("Rodrigo");
 
-        } catch (Exception e) {
-        }
+        printResultados("", scanner);
+
     }
 
 }
