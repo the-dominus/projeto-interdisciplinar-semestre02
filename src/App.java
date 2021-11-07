@@ -3,9 +3,11 @@ import java.util.Scanner;
 
 public class App {
 
+    static ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
+    static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
         boolean isRunning = true;
 
@@ -19,7 +21,7 @@ public class App {
 
                 switch (resposta) {
                 case '1':
-                    printClientes(scanner, clientes);
+                    printClientes(scanner);
                     break;
                 case '2':
                     printVeiculos(scanner);
@@ -98,7 +100,7 @@ public class App {
 
     }
 
-    public static void printClientes(Scanner scanner, ArrayList<Cliente> clientes) {
+    public static void printClientes(Scanner scanner) {
 
         String title = "# Clientes";
         boolean isBack = true;
@@ -113,8 +115,8 @@ public class App {
             switch (resposta) {
             case '1':
                 clearScreen();
-                cadastraCliente(scanner, clientes);
-                printResultados("Cliente cadastrado com sucesso do Rodrigão!", scanner);
+                cadastraCliente(scanner);
+                printResultados("\n\nCliente cadastrado com sucesso!", scanner);
                 break;
             case '2':
                 clearScreen();
@@ -123,15 +125,12 @@ public class App {
                 break;
             case '3':
                 clearScreen();
-
-                consultarClientes(scanner, clientes);
-
-                // printResultados(message, scanner);
+                consultarClientes();
+                printResultados("", scanner);
                 break;
             case '4':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Excluíu", scanner);
+                excluiCliente(scanner);
                 break;
             case '5':
                 isBack = false;
@@ -144,8 +143,7 @@ public class App {
 
     }
 
-    public static void cadastraCliente(Scanner scanner, ArrayList<Cliente> clientes) {
-
+    public static void cadastraCliente(Scanner scanner) {
         String title = "# Cadastro de cliente";
         clearScreen();
         printTitle(title);
@@ -157,24 +155,55 @@ public class App {
         System.out.println("E por fim, seu e-mail: ");
         String email = scanner.nextLine();
 
-        Usuario cliente = new Cliente(nome, cpf, email);
+        Usuario novoCliente = new Cliente(nome, cpf, email);
 
-        clientes.add((Cliente) cliente);
+        clientes.add((Cliente) novoCliente);
 
+        Cliente ultimoCliente = clientes.get(clientes.size() - 1);
+
+        novoCliente.setId(ultimoCliente.getId() + 1);
     }
 
-    public static void consultarClientes(Scanner scanner, ArrayList<Cliente> clientes) {
-
+    public static void consultarClientes() {
         String title = "# Nossos clientes";
-        clearScreen();
         printTitle(title);
 
-        String message = "";
-        for (int i = 0; i < clientes.size(); i++) {
-            message += clientes.get(i).getNome() + "\n";
+        for (Cliente cliente : clientes) {
+            cliente.imprimir();
         }
+    }
 
-        printResultados(message, scanner);
+    public static void excluiCliente(Scanner scanner) {
+        String title = "# Exclusão de cliente";
+
+        boolean foiExcluido = false;
+
+        while (!foiExcluido) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do cliente para excluir: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Cliente cliente : clientes) {
+                if (cliente.getId() == id) {
+                    clientes.remove(cliente);
+                    foiExcluido = true;
+
+                    printResultados("\nCliente excluído com sucesso!", scanner);
+                    break;
+                }
+            }
+
+            if (!foiExcluido) {
+                System.out.println("\n\nCliente não encontrado!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+        }
     }
 
     public static void printVeiculos(Scanner scanner) {
@@ -271,7 +300,9 @@ public class App {
 
         try {
             scanner.nextLine();
+
         } catch (Exception e) {
         }
     }
+
 }
