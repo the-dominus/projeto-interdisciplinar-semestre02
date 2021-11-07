@@ -1,6 +1,5 @@
 public class Cliente extends Usuario {
-  private String endereco;
-  private String cpf;
+  private String endereco, cpf;
 
   public Cliente(String nome, String email, String cpf) {
     super(nome, email);
@@ -24,7 +23,20 @@ public class Cliente extends Usuario {
   }
 
   public void imprimir() {
-    // TODO Auto-generated method stub
+    String message = "";
+    message += "[" + this.getId() + "] ";
+    message += this.getNome();
+    message += "\nCPF: " + this.getCpf() + " - Endereço: " + this.getEndereco();
+    message += "\nEmail: " + this.getEmail() + " - Senha: " + this.getSenha();
+    message += "\n";
+
+    System.out.println(message);
+  }
+
+  @Override
+  public String toString() {
+    // deixar o toString na foma de listar
+    return super.toString() + "CPF=" + cpf + ", Endereco=" + endereco + "]";
   }
 
 }

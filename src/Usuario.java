@@ -1,8 +1,6 @@
 public abstract class Usuario {
-  protected int id;
-  protected String nome;
-  protected String email;
-  protected String senha;
+  private int id;
+  private String nome, email, senha;
 
   public Usuario(String nome, String email) {
     this.nome = nome;
@@ -43,4 +41,8 @@ public abstract class Usuario {
 
   public abstract void imprimir();
 
+  @Override
+  public String toString() {
+    return "Usuario [email=" + email + ", id=" + id + ", nome=" + nome + ", senha=" + senha + "]";
+  }
 }

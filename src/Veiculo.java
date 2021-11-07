@@ -1,10 +1,7 @@
 public class Veiculo {
-  private int id;
+  private int id, ano;
   private long preco;
-  private String modelo;
-  private String cor;
-  private int ano;
-  private String placa;
+  private String modelo, cor, placa;
 
   public Veiculo() {
   }
@@ -59,7 +56,8 @@ public class Veiculo {
 
   @Override
   public String toString() {
-    // TODO Auto-generated method stub
-    return super.toString();
+    return "Veiculo [ano=" + ano + ", cor=" + cor + ", id=" + id + ", modelo=" + modelo + ", placa=" + placa
+        + ", preco=" + preco + "]";
   }
+
 }
