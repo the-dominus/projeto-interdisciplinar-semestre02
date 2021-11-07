@@ -11,21 +11,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
-
-        for (int i = 0; i < 3; i++) {
-            int id = i + 1;
-            Cliente cliente = new Cliente("cliente " + id, "cliente" + id + "@gmail.com", "123456789");
-            cliente.setId(id);
-            clientes.add(cliente);
-        }
-
-        for (int i = 0; i < 3; i++) {
-            int id = i + 1;
-            Veiculo veiculo = new Veiculo(000 + id, (long) 0.0 + id, "Marca" + id, "Modelo" + id, "Cor" + id);
-            veiculo.setId(id);
-            veiculos.add(veiculo);
-        }
-
         boolean isRunning = true;
 
         while (isRunning) {
@@ -545,18 +530,16 @@ public class App {
                 break;
             case '2':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Alterô", scanner);
+                alteraPedido(scanner);
                 break;
             case '3':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Consultô", scanner);
+                consultarPedido();
+                printResultados("", scanner);
                 break;
             case '4':
                 clearScreen();
-                // Aqui vai a funcionalidade de cadastrar um pedido
-                printResultados("Excluíu", scanner);
+                excluiPedido(scanner);
                 break;
             case '5':
                 isBack = false;
@@ -635,11 +618,204 @@ public class App {
 
             Pedido novoPedido = new Pedido(clienteSelecionado, veiculosSelecionados);
             novoPedido.setId(id);
+            novoPedido.calcularTotalPedido();
             pedidos.add(novoPedido);
 
             printResultados("\n\nPedido cadastrado com sucesso!", scanner);
         } catch (Exception e) {
             printResultados("\nVocê digitou algo de errado!", scanner);
+        }
+    }
+
+    public static void consultarPedido() {
+        String title = "# Lista de pedidos";
+        printTitle(title);
+
+        for (Pedido pedido : pedidos) {
+            pedido.imprimir();
+        }
+    }
+
+    public static void excluiPedido(Scanner scanner) {
+        String title = "# Exclusão de pedido";
+
+        boolean foiExcluido = false;
+
+        while (!foiExcluido) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do veículo para excluir: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Pedido pedido : pedidos) {
+                if (pedido.getId() == id) {
+                    pedidos.remove(pedido);
+                    foiExcluido = true;
+
+                    printResultados("\nPedido excluído com sucesso!", scanner);
+                    break;
+                }
+            }
+
+            if (!foiExcluido) {
+                System.out.println("\n\nPedido não encontrado!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void alteraPedido(Scanner scanner) {
+        String title = "# Alteração de pedidos";
+
+        boolean foiAlterado = false;
+
+        while (!foiAlterado) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do pedido para alterar: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Pedido pedido : pedidos) {
+                if (pedido.getId() == id) {
+                    String infoPedido = pedido.toString();
+                    System.out.println(infoPedido);
+
+                    try {
+                        System.out.println("Quais informações você deseja alterar?");
+                        char resposta = scanner.nextLine().charAt(0);
+
+                        switch (resposta) {
+                        case '1':
+                            Cliente clienteSelecionado = null;
+                            while (clienteSelecionado == null) {
+                                System.out.print("\nDigite o ID do novo cliente: ");
+                                int idCliente = Integer.parseInt(scanner.nextLine());
+
+                                for (Cliente cliente : clientes) {
+                                    if (cliente.getId() == idCliente) {
+                                        clienteSelecionado = cliente;
+                                        break;
+                                    }
+                                }
+
+                                if (clienteSelecionado == null) {
+                                    printResultados("\nCliente selecionado não existe!\n", scanner);
+                                    clearScreen();
+                                    printTitle(title);
+                                }
+                            }
+
+                            pedido.setCliente(clienteSelecionado);
+                            foiAlterado = true;
+                            printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            break;
+                        case '2':
+                            System.out.println("\nVocê deseja adicionar ou remover um veículo (A/R)?");
+                            char opcao = scanner.nextLine().toUpperCase().charAt(0);
+
+                            if (opcao == 'A') {
+                                Veiculo veiculoSelecionado = null;
+                                while (veiculoSelecionado == null) {
+                                    System.out.print("\nDigite o ID do veículo: ");
+                                    int idVeiculo = Integer.parseInt(scanner.nextLine());
+
+                                    for (Veiculo veiculo : veiculos) {
+                                        if (veiculo.getId() == idVeiculo) {
+                                            veiculoSelecionado = veiculo;
+                                            break;
+                                        }
+                                    }
+                                    if (veiculoSelecionado == null) {
+                                        printResultados("\nVeículo selecionado não existe!\n", scanner);
+                                        clearScreen();
+                                        printTitle(title);
+                                    }
+                                }
+
+                                pedido.getVeiculos().add(veiculoSelecionado);
+                                foiAlterado = true;
+                                printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            } else if (opcao == 'R') {
+                                clearScreen();
+                                printTitle(title);
+
+                                for (Veiculo veiculo : pedido.getVeiculos()) {
+                                    System.out.println("[" + veiculo.getId() + "] " + veiculo.getNomeVeiculo());
+                                }
+
+                                Veiculo veiculoSelecionado = null;
+                                while (veiculoSelecionado == null) {
+                                    System.out.print("\nDigite o ID do veículo: ");
+                                    int idVeiculo = Integer.parseInt(scanner.nextLine());
+
+                                    for (Veiculo veiculo : pedido.getVeiculos()) {
+                                        if (veiculo.getId() == idVeiculo) {
+                                            veiculoSelecionado = veiculo;
+                                            break;
+                                        }
+                                    }
+                                    if (veiculoSelecionado == null) {
+                                        printResultados("\nVeículo selecionado não existe!\n", scanner);
+                                        clearScreen();
+                                        printTitle(title);
+                                    }
+                                }
+
+                                pedido.getVeiculos().remove(veiculoSelecionado);
+                                foiAlterado = true;
+                                printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            }
+
+                            break;
+                        case '3':
+                            System.out.print("\nDigite um texto com a nova forma de pagamento: ");
+                            String formaDePagamento = scanner.nextLine();
+
+                            pedido.setFormaDePagamento(formaDePagamento);
+                            foiAlterado = true;
+                            printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            break;
+                        case '4':
+                            System.out.print("\nDigite o novo valor: ");
+                            long totalPedido = Long.parseLong(scanner.nextLine());
+
+                            pedido.setTotalPedido(totalPedido);
+                            foiAlterado = true;
+                            printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            break;
+                        case '5':
+                            System.out.print("\nFoi pago (S/N)? ");
+                            char foiPago = scanner.nextLine().toUpperCase().charAt(0);
+
+                            pedido.setPedidoFinalizado(foiPago == 'S');
+                            foiAlterado = true;
+                            printResultados("\n\nPedido alterado com sucesso!", scanner);
+                            break;
+
+                        default:
+                            break;
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    break;
+                }
+            }
+
+            if (!foiAlterado) {
+                System.out.println("\n\nPedido não encontrado ou existem informações inválidas!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
         }
     }
 

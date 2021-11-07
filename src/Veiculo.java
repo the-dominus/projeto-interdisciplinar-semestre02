@@ -76,15 +76,19 @@ public class Veiculo {
     this.placa = placa;
   }
 
-  public void imprimir(){
+  public void imprimir() {
     String message = "";
 
-    message += "[" + this.getId() + "] "; 
-    message += "Veículo: " + this.getMarca() + " " + this.getModelo() + " - " + this.getAno() + "\n";
+    message += "[" + this.getId() + "] ";
+    message += "Veículo: " + this.getNomeVeiculo() + "\n";
     message += "Cor: " + this.getCor() + " - Preço: " + this.getPreco() + "\n";
     message += "Placa: " + this.getPlaca() + "\n";
 
     System.out.println(message);
+  }
+
+  public String getNomeVeiculo() {
+    return this.getMarca() + " " + this.getModelo() + " - " + this.getAno();
   }
 
   @Override
