@@ -42,8 +42,8 @@ public class App {
                 }
 
             } catch (Exception e) {
-                System.out.println("\n\nVocê fez algo de errado!");
-                System.out.println("\nMensagem do erro: " + e.getMessage());
+                String errorMessage = "\nMensagem do erro: " + e.getMessage();
+                printResultados("\nVocê digitou algo de errado!" + errorMessage, scanner);
             }
         }
 
@@ -229,6 +229,7 @@ public class App {
                             break;
                         }
                     } catch (Exception e) {
+                        printResultados("\nVocê digitou algo de errado!", scanner);
                     }
 
                     break;
@@ -342,7 +343,7 @@ public class App {
         System.out.println("Digite o modelo do veículo: ");
         String modelo = scanner.nextLine();
         System.out.println("Digite o preço do veículo: ");
-        long preco = Long.parseLong(scanner.nextLine());
+        double preco = Double.parseDouble(scanner.nextLine());
         System.out.println("Digite a cor do veículo: ");
         String cor = scanner.nextLine();
         System.out.println("Digite o ano do veículo: ");
@@ -449,7 +450,7 @@ public class App {
                             break;
                         case '2':
                             System.out.print("\nDigite o novo valor: ");
-                            long preco = Long.parseLong(scanner.nextLine());
+                            double preco = Double.parseDouble(scanner.nextLine());
 
                             veiculo.setPreco(preco);
                             foiAlterado = true;
@@ -493,6 +494,7 @@ public class App {
                             break;
                         }
                     } catch (Exception e) {
+                        printResultados("\nVocê digitou algo de errado!", scanner);
                     }
 
                     break;
@@ -782,7 +784,7 @@ public class App {
                             break;
                         case '4':
                             System.out.print("\nDigite o novo valor: ");
-                            long totalPedido = Long.parseLong(scanner.nextLine());
+                            double totalPedido = Double.parseDouble(scanner.nextLine());
 
                             pedido.setTotalPedido(totalPedido);
                             foiAlterado = true;

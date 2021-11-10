@@ -1,9 +1,9 @@
 public class Veiculo {
   private int id, ano;
-  private long preco;
+  private double preco;
   private String modelo, cor, placa, marca;
 
-  public Veiculo(int ano, long preco, String marca, String modelo, String cor, String placa) {
+  public Veiculo(int ano, double preco, String marca, String modelo, String cor, String placa) {
     this.ano = ano;
     this.preco = preco;
     this.marca = marca;
@@ -12,7 +12,7 @@ public class Veiculo {
     this.placa = placa;
   }
 
-  public Veiculo(int ano, long preco, String marca, String modelo, String cor) {
+  public Veiculo(int ano, double preco, String marca, String modelo, String cor) {
     this.ano = ano;
     this.preco = preco;
     this.marca = marca;
@@ -28,11 +28,11 @@ public class Veiculo {
     this.id = id;
   }
 
-  public long getPreco() {
+  public double getPreco() {
     return preco;
   }
 
-  public void setPreco(long preco) {
+  public void setPreco(double preco) {
     this.preco = preco;
   }
 

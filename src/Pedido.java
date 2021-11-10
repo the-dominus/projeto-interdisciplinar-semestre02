@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Pedido {
   private int id;
-  private long totalPedido;
+  private double totalPedido;
   private Cliente cliente;
   private ArrayList<Veiculo> veiculos;
   private String formaDePagamento;
@@ -21,11 +21,11 @@ public class Pedido {
     this.id = id;
   }
 
-  public long getTotalPedido() {
+  public double getTotalPedido() {
     return totalPedido;
   }
 
-  public void setTotalPedido(long totalPedido) {
+  public void setTotalPedido(double totalPedido) {
     this.totalPedido = totalPedido;
   }
 
