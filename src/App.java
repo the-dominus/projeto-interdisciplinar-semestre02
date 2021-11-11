@@ -4,10 +4,14 @@ import java.util.Scanner;
 
 public class App {
 
+    //
+    // Onde os dados ficam armazenados em memória
+    //
     static ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
     static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
     static ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 
+    // Método principal
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
@@ -51,14 +55,17 @@ public class App {
 
     }
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
+    //
+    // Utilidades para o sistema
+    //
     public static void printTitle(String title) {
         System.out.println("************************** Concessionária Goiabinha **************************\n");
         System.out.println(title + "\n");
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static void printOptionsMenu() {
@@ -82,6 +89,9 @@ public class App {
         }
     }
 
+    //
+    // Telas
+    //
     public static void initialScreen() {
         String title = "# Tela inicial";
 
@@ -138,6 +148,109 @@ public class App {
 
     }
 
+    public static void printVeiculos(Scanner scanner) {
+
+        String title = "# Veículos";
+        boolean isBack = true;
+
+        while (isBack) {
+            clearScreen();
+            printTitle(title);
+            printOptionsMenu();
+
+            char resposta = scanner.nextLine().charAt(0);
+
+            switch (resposta) {
+            case '1':
+                clearScreen();
+                cadastraVeiculo(scanner);
+                printResultados("Cadastro concluído!", scanner);
+                break;
+            case '2':
+                clearScreen();
+                alteraVeiculo(scanner);
+                break;
+            case '3':
+                clearScreen();
+                consultarVeiculos();
+                printResultados("", scanner);
+                break;
+            case '4':
+                clearScreen();
+                excluiVeiculo(scanner);
+                break;
+            case '5':
+                isBack = false;
+                break;
+
+            default:
+                break;
+            }
+        }
+
+    }
+
+    public static void printPedidos(Scanner scanner) {
+
+        String title = "# Pedidos";
+        boolean isBack = true;
+
+        while (isBack) {
+            clearScreen();
+            printTitle(title);
+            printOptionsMenu();
+
+            char resposta = scanner.nextLine().charAt(0);
+
+            switch (resposta) {
+            case '1':
+                clearScreen();
+                cadastraPedido(scanner);
+                break;
+            case '2':
+                clearScreen();
+                alteraPedido(scanner);
+                break;
+            case '3':
+                clearScreen();
+                consultarPedido();
+                printResultados("", scanner);
+                break;
+            case '4':
+                clearScreen();
+                excluiPedido(scanner);
+                break;
+            case '5':
+                isBack = false;
+                break;
+
+            default:
+                break;
+            }
+        }
+
+    }
+
+    public static void printSobre(Scanner scanner) {
+        clearScreen();
+
+        String title = "# Sobre o sistema";
+        printTitle(title);
+        System.out.println("Esses são nossos desenvolvedores: ");
+        System.out.println("Cleyson");
+        System.out.println("Bruno");
+        System.out.println("Lari");
+        System.out.println("Lucas");
+        System.out.println("Luigi");
+        System.out.println("Rodrigo");
+
+        printResultados("", scanner);
+
+    }
+
+    //
+    // Métodos para os clientes
+    //
     public static void cadastraCliente(Scanner scanner) {
         String title = "# Cadastro de cliente";
         clearScreen();
@@ -290,48 +403,9 @@ public class App {
         }
     }
 
-    public static void printVeiculos(Scanner scanner) {
-
-        String title = "# Veículos";
-        boolean isBack = true;
-
-        while (isBack) {
-            clearScreen();
-            printTitle(title);
-            printOptionsMenu();
-
-            char resposta = scanner.nextLine().charAt(0);
-
-            switch (resposta) {
-            case '1':
-                clearScreen();
-                cadastraVeiculo(scanner);
-                printResultados("Cadastro concluído!", scanner);
-                break;
-            case '2':
-                clearScreen();
-                alteraVeiculo(scanner);
-                break;
-            case '3':
-                clearScreen();
-                consultarVeiculos();
-                printResultados("", scanner);
-                break;
-            case '4':
-                clearScreen();
-                excluiVeiculo(scanner);
-                break;
-            case '5':
-                isBack = false;
-                break;
-
-            default:
-                break;
-            }
-        }
-
-    }
-
+    //
+    // Métodos para os veículos
+    //
     public static void cadastraVeiculo(Scanner scanner) {
 
         String title = "# Cadastro de veículos";
@@ -375,48 +449,6 @@ public class App {
             novoVeiculo.setId(id);
         }
 
-    }
-
-    public static void consultarVeiculos() {
-        String title = "# Nossos veículos";
-        printTitle(title);
-
-        for (Veiculo veiculo : veiculos) {
-            veiculo.imprimir();
-        }
-    }
-
-    public static void excluiVeiculo(Scanner scanner) {
-        String title = "# Exclusão de veículo";
-
-        boolean foiExcluido = false;
-
-        while (!foiExcluido) {
-            clearScreen();
-            printTitle(title);
-            System.out.println("Digite o identificador do veículo para excluir: ");
-            int id = Integer.parseInt(scanner.nextLine());
-
-            for (Veiculo veiculo : veiculos) {
-                if (veiculo.getId() == id) {
-                    veiculos.remove(veiculo);
-                    foiExcluido = true;
-
-                    printResultados("\nVeículo excluído com sucesso!", scanner);
-                    break;
-                }
-            }
-
-            if (!foiExcluido) {
-                System.out.println("\n\nVeículo não encontrado!");
-                System.out.println("Deseja continuar? (S/N)");
-                char resposta = scanner.nextLine().toUpperCase().charAt(0);
-
-                if (resposta == 'N') {
-                    break;
-                }
-            }
-        }
     }
 
     public static void alteraVeiculo(Scanner scanner) {
@@ -513,47 +545,51 @@ public class App {
         }
     }
 
-    public static void printPedidos(Scanner scanner) {
+    public static void consultarVeiculos() {
+        String title = "# Nossos veículos";
+        printTitle(title);
 
-        String title = "# Pedidos";
-        boolean isBack = true;
-
-        while (isBack) {
-            clearScreen();
-            printTitle(title);
-            printOptionsMenu();
-
-            char resposta = scanner.nextLine().charAt(0);
-
-            switch (resposta) {
-            case '1':
-                clearScreen();
-                cadastraPedido(scanner);
-                break;
-            case '2':
-                clearScreen();
-                alteraPedido(scanner);
-                break;
-            case '3':
-                clearScreen();
-                consultarPedido();
-                printResultados("", scanner);
-                break;
-            case '4':
-                clearScreen();
-                excluiPedido(scanner);
-                break;
-            case '5':
-                isBack = false;
-                break;
-
-            default:
-                break;
-            }
+        for (Veiculo veiculo : veiculos) {
+            veiculo.imprimir();
         }
-
     }
 
+    public static void excluiVeiculo(Scanner scanner) {
+        String title = "# Exclusão de veículo";
+
+        boolean foiExcluido = false;
+
+        while (!foiExcluido) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do veículo para excluir: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Veiculo veiculo : veiculos) {
+                if (veiculo.getId() == id) {
+                    veiculos.remove(veiculo);
+                    foiExcluido = true;
+
+                    printResultados("\nVeículo excluído com sucesso!", scanner);
+                    break;
+                }
+            }
+
+            if (!foiExcluido) {
+                System.out.println("\n\nVeículo não encontrado!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+        }
+    }
+
+    //
+    // Métodos para os pedidos
+    //
     public static void cadastraPedido(Scanner scanner) {
         String title = "# Cadastro de pedido";
         clearScreen();
@@ -626,48 +662,6 @@ public class App {
             printResultados("\n\nPedido cadastrado com sucesso!", scanner);
         } catch (Exception e) {
             printResultados("\nVocê digitou algo de errado!", scanner);
-        }
-    }
-
-    public static void consultarPedido() {
-        String title = "# Lista de pedidos";
-        printTitle(title);
-
-        for (Pedido pedido : pedidos) {
-            pedido.imprimir();
-        }
-    }
-
-    public static void excluiPedido(Scanner scanner) {
-        String title = "# Exclusão de pedido";
-
-        boolean foiExcluido = false;
-
-        while (!foiExcluido) {
-            clearScreen();
-            printTitle(title);
-            System.out.println("Digite o identificador do veículo para excluir: ");
-            int id = Integer.parseInt(scanner.nextLine());
-
-            for (Pedido pedido : pedidos) {
-                if (pedido.getId() == id) {
-                    pedidos.remove(pedido);
-                    foiExcluido = true;
-
-                    printResultados("\nPedido excluído com sucesso!", scanner);
-                    break;
-                }
-            }
-
-            if (!foiExcluido) {
-                System.out.println("\n\nPedido não encontrado!");
-                System.out.println("Deseja continuar? (S/N)");
-                char resposta = scanner.nextLine().toUpperCase().charAt(0);
-
-                if (resposta == 'N') {
-                    break;
-                }
-            }
         }
     }
 
@@ -821,21 +815,46 @@ public class App {
         }
     }
 
-    public static void printSobre(Scanner scanner) {
-        clearScreen();
-
-        String title = "# Sobre o sistema";
+    public static void consultarPedido() {
+        String title = "# Lista de pedidos";
         printTitle(title);
-        System.out.println("Esses são nossos desenvolvedores: ");
-        System.out.println("Cleyson");
-        System.out.println("Bruno");
-        System.out.println("Lari");
-        System.out.println("Lucas");
-        System.out.println("Luigi");
-        System.out.println("Rodrigo");
 
-        printResultados("", scanner);
+        for (Pedido pedido : pedidos) {
+            pedido.imprimir();
+        }
+    }
 
+    public static void excluiPedido(Scanner scanner) {
+        String title = "# Exclusão de pedido";
+
+        boolean foiExcluido = false;
+
+        while (!foiExcluido) {
+            clearScreen();
+            printTitle(title);
+            System.out.println("Digite o identificador do veículo para excluir: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            for (Pedido pedido : pedidos) {
+                if (pedido.getId() == id) {
+                    pedidos.remove(pedido);
+                    foiExcluido = true;
+
+                    printResultados("\nPedido excluído com sucesso!", scanner);
+                    break;
+                }
+            }
+
+            if (!foiExcluido) {
+                System.out.println("\n\nPedido não encontrado!");
+                System.out.println("Deseja continuar? (S/N)");
+                char resposta = scanner.nextLine().toUpperCase().charAt(0);
+
+                if (resposta == 'N') {
+                    break;
+                }
+            }
+        }
     }
 
 }
