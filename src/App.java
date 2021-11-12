@@ -237,12 +237,12 @@ public class App {
         String title = "# Sobre o sistema";
         printTitle(title);
         System.out.println("Esses são nossos desenvolvedores: ");
-        System.out.println("Cleyson");
-        System.out.println("Bruno");
-        System.out.println("Lari");
-        System.out.println("Lucas");
-        System.out.println("Luigi");
-        System.out.println("Rodrigo");
+        System.out.println("Bruno Gomes");
+        System.out.println("Cleyson Reginaldo");
+        System.out.println("Larissa Sousa");
+        System.out.println("Lucas Vital");
+        System.out.println("Luigi Ramires");
+        System.out.println("Rodrigo Correa");
 
         printResultados("", scanner);
 
