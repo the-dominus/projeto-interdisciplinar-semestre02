@@ -734,6 +734,7 @@ public class App {
                                 }
 
                                 pedido.getVeiculos().add(veiculoSelecionado);
+                                pedido.calcularTotalPedido();
                                 foiAlterado = true;
                                 printResultados("\n\nPedido alterado com sucesso!", scanner);
                             } else if (opcao == 'R') {
@@ -763,6 +764,7 @@ public class App {
                                 }
 
                                 pedido.getVeiculos().remove(veiculoSelecionado);
+                                pedido.calcularTotalPedido();
                                 foiAlterado = true;
                                 printResultados("\n\nPedido alterado com sucesso!", scanner);
                             }
